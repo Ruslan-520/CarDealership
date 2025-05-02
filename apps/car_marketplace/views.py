@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from .models import Car
 from .serializers import  CarSerializer
-from  rest_framework import viewset
+from  rest_framework import viewsets
 
-class CarViewList(viewset.ModelViewSet):
-    quaryset = Car.objects.all()
+class CarViewList(viewsets.ModelViewSet):
+    queryset = Car.objects.all()
     serializer_class = CarSerializer

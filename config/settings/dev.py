@@ -1,4 +1,4 @@
 from .base import *
 
 DEBUG = True
-ALLOWED_HOSTS = ['mydomain.com']
+ALLOWED_HOSTS = ['*']
