@@ -7,4 +7,6 @@ class Application(models.Model):
     is_complete = models.BooleanField(default=False)
     # определить поля для кол-ва эл qn is_complete  и типы данных, виды полей и их значения.
     class Meta:
-        app_label = 'car_marketplace'
+        app_label = 'applications'
+    def __str__(self):
+        return f'{self.price}\t{self.user_id}\t{self.quantity}\t{self.is_complete}'

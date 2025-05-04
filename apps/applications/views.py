@@ -4,5 +4,5 @@ from .serializers import ApplicationSerializer
 from rest_framework import viewsets
 
 class ApplicationViewList(viewsets.ModelViewSet):
-    queryset = Application.object.all()
+    queryset = Application.objects.all()
     serializer_class =  ApplicationSerializer
