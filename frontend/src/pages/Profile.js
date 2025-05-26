@@ -25,7 +25,7 @@ const ProfilePage = () => {
         const { data } = await apiClient.get('/auth/profile/');
         setUser(data);
       } catch (err) {
-        setError(err.response?.data?.detail || 'Failed to load profile');
+        setError(err.response?.data?.detail || 'Не удалось загрузить профиль');
       } finally {
         setLoading(false);
       }
