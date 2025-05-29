@@ -22,7 +22,7 @@ const ProfilePage = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const { data } = await apiClient.get('/auth/profile/');
+        const { data } = await apiClient.get('/users/auth/profile/');
         setUser(data);
       } catch (err) {
         setError(err.response?.data?.detail || 'Не удалось загрузить профиль');

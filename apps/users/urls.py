@@ -11,7 +11,7 @@ from .views import (
 
 urlpatterns = [
     path('', UserListView.as_view(), name='user-list'),
-    path('register/', UserCreateView.as_view(), name='user-register'),
+    path('auth/register/', UserCreateView.as_view(), name='user-register'),
     path('auth/profile/', CurrentUserView.as_view(), name='current-user'),
     path('<int:pk>/', UserDetailView.as_view(), name='user-detail'),
 

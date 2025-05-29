@@ -26,13 +26,14 @@ const LoginPage = () => {
       ...formData,
       [e.target.name]: e.target.value,
     });
+    
   };
 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await apiClient.post('/auth/login/', formData);
+      const response = await apiClient.post('/users/auth/login', formData);
       localStorage.setItem('access_token', response.data.access);
       localStorage.setItem('refresh_token', response.data.refresh);
       navigate('/profile');

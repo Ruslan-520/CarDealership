@@ -67,11 +67,13 @@ const RegisterPage = () => {
     }
 
     try {
-      const response = await apiClient.post('/auth/register/', {
+      const response = await apiClient.post('/users/auth/register/', {
         username: formData.username,
         email: formData.email,
         password: formData.password
       });
+
+      console.log('Full response:', response);  // нужно для отладки
 
       localStorage.setItem('access_token', response.data.access);
       localStorage.setItem('refresh_token', response.data.refresh);
@@ -141,7 +143,7 @@ const RegisterPage = () => {
               }}
               onClick={() => setOpenErrors(!openErrors)}
             >
-               // интерактивное отображение ошибок валидации в форме регистрации.
+               {/* интерактивное отображение ошибок валидации в форме регистрации.*/}
               <Typography color="error">
                 {errors.general}
               </Typography>

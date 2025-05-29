@@ -2,6 +2,8 @@ from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.tokens import RefreshToken
+
 
 from .serializers import UserSerializer, CustomTokenObtainPairSerializer
 from .models import User
@@ -23,11 +25,20 @@ class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
         return [permissions.AllowAny()]
 
 
-class UserCreateView(generics.CreateAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
+class UserCreateView(APIView):
     permission_classes = [permissions.AllowAny]
 
+    def post(self, request):
+        serializer = UserSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=400)
+
+        user = serializer.save()
+        refresh = RefreshToken.for_user(user)
+        return Response({
+            'access': str(refresh.access_token),
+            'refresh': str(refresh),
+        }, status=201)
 
 class CurrentUserView(APIView):
     permission_classes = [permissions.IsAuthenticated]
