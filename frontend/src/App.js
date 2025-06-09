@@ -6,6 +6,7 @@ import LoginPage from './pages/Login';
 import RegisterPage from './pages/Register';
 import Layout from './components/Layout';
 import ProfilePage from './pages/Profile';
+import AdminPanelPage from './pages/AdminPanel';
 
 const theme = createTheme();
 
@@ -22,6 +23,7 @@ function App() {
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/admin_panel" element={<AdminPanelPage />} />
           </Routes>
         </Layout>
       </Router>

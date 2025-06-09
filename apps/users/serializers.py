@@ -2,30 +2,43 @@ from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from .models import User
 
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = '__all__'
+        extra_kwargs = {
+            'email': {'required': False},  # email не обязателен
+            'password': {'write_only': True}  # пароль скрыт в ответах
+        }
+
+    def create(self, validated_data):
+        # Создание пользователя с хешированием пароля
+        user = User.objects.create_user(
+            username=validated_data['username'],
+            password=validated_data['password'],
+            email=validated_data.get('email', '')  # email опционален
+        )
+        return user
+
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
-    @classmethod
-    def get_token(cls, user):
-        token = super().get_token(user)
-        token['username'] = user.username
-        token['email'] = user.email
-        token['id'] = user.id
-        return token
-
     def validate(self, attrs):
-        data = super().validate(attrs)
-        refresh = self.get_token(self.user)
+        # Убираем все лишние поля, оставляем только username/password
+        attrs = {
+            'username': attrs.get('username'),
+            'password': attrs.get('password')
+        }
 
-        # Добавляем дополнительные данные в ответ
+        # Стандартная валидация JWT
+        data = super().validate(attrs)
+
+        # Дополнительные данные в ответе (опционально)
+        refresh = self.get_token(self.user)
         data.update({
             'user_id': self.user.id,
-            'email': self.user.email,
             'username': self.user.username,
-            'refresh_exp': refresh.payload['exp'],  # Срок жизни refresh токена
-            'access_exp': refresh.access_token.payload['exp']  # Срок жизни access токена
+            'refresh_exp': refresh.payload['exp'],
+            'access_exp': refresh.access_token.payload['exp']
         })
         return data

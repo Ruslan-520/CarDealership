@@ -40,6 +40,7 @@ class UserCreateView(APIView):
             'refresh': str(refresh),
         }, status=201)
 
+
 class CurrentUserView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
@@ -49,4 +50,5 @@ class CurrentUserView(APIView):
 
 
 class CustomTokenObtainPairView(TokenObtainPairView):
+    permission_classes = [permissions.AllowAny]
     serializer_class = CustomTokenObtainPairSerializer

@@ -33,10 +33,15 @@ const LoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await apiClient.post('/users/auth/login', formData);
+      const response = await apiClient.post('/users/auth/login/', formData);
       localStorage.setItem('access_token', response.data.access);
       localStorage.setItem('refresh_token', response.data.refresh);
-      navigate('/profile');
+      if ( formData.username === 'admin' ) {
+        navigate('/admin_panel');
+      }
+      else{
+        navigate('/profile');
+      }
     } catch (err) {
       setError(err.response?.data?.detail || 'Failed to login');
     }
