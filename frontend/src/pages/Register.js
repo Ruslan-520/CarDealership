@@ -71,7 +71,7 @@ const RegisterPage = () => {
         username: formData.username,
         email: formData.email,
         password: formData.password
-      });
+      }, {skipAuth: true});
 
       console.log('Full response:', response);  // нужно для отладки
 

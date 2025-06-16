@@ -12,10 +12,10 @@ const CarsPage = () => {
   useEffect(() => {
     const fetchCars = async () => {
       try {
-        const { data } = await apiClient.get('/cars/');
+        const { data } = await apiClient.get('/car_marketplace/');
         setCars(data);
       } catch (error) {
-        console.error('Error fetching cars:', error);
+        console.error('Ошибка при выборке автомобилей:', error);
       } finally {
         setLoading(false);
       }

@@ -1,6 +1,9 @@
+from os import access
+
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from .models import User
+from django.utils.timezone import now
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -23,22 +26,25 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    username_field = 'email'
     def validate(self, attrs):
         # Убираем все лишние поля, оставляем только username/password
         attrs = {
-            'username': attrs.get('username'),
+            'email': attrs.get('email'),
             'password': attrs.get('password')
         }
 
         # Стандартная валидация JWT
         data = super().validate(attrs)
 
+
         # Дополнительные данные в ответе (опционально)
         refresh = self.get_token(self.user)
+        access_token = refresh.access_token
         data.update({
             'user_id': self.user.id,
-            'username': self.user.username,
-            'refresh_exp': refresh.payload['exp'],
-            'access_exp': refresh.access_token.payload['exp']
+            'email': self.user.email,
+            'refresh_exp': (now() + refresh.lifetime).timestamp(),
+            'access_exp': (now() + access_token.lifetime).timestamp()
         })
         return data
